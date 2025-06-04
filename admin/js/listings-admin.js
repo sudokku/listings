@@ -14,7 +14,7 @@
         $('.add-feature').on('click', function () {
             var featureHtml = '<p class="feature-item">' +
                 '<input type="text" name="listing_features[]" value="" class="widefat">' +
-                '<button type="button" class="button remove-feature">' + listings_admin.remove_text + '</button>' +
+                '<button type="button" class="button remove-feature">Remove</button>' +
                 '</p>';
             $('#listing-features-container').append(featureHtml);
         });
