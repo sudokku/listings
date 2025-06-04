@@ -1,0 +1,56 @@
+/* Admin styles for the Listings plugin */
+.listings-admin-container {
+    padding: 20px;
+}
+
+.listings-admin-header {
+    margin-bottom: 20px;
+}
+
+.listings-admin-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Meta box styles */
+.listing-meta-box {
+    padding: 10px 0;
+}
+
+.listing-meta-box p {
+    margin: 10px 0;
+}
+
+.listing-meta-box label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.listing-meta-box input[type="text"],
+.listing-meta-box input[type="number"],
+.listing-meta-box select {
+    width: 100%;
+    max-width: 400px;
+}
+
+.feature-item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.feature-item input {
+    flex: 1;
+}
+
+.remove-feature {
+    color: #dc3232;
+}
+
+.add-feature {
+    margin-top: 10px;
+}

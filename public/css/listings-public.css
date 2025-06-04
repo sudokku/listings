@@ -1,0 +1,17 @@
+/* Public styles for the Listings plugin */
+.listings-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.listings-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.listings-item:hover {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
