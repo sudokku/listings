@@ -112,7 +112,7 @@ class Listings
             'hierarchical' => false,
             'menu_position' => 5,
             'menu_icon' => 'dashicons-building',
-            'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'custom-fields'),
+            'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
         );
 
         register_post_type('listing', $args);
