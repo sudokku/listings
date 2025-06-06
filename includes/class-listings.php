@@ -42,6 +42,9 @@ class Listings
         // The class responsible for handling meta boxes
         require_once LISTINGS_PLUGIN_DIR . 'includes/class-listings-meta.php';
 
+        // The class responsible for handling taxonomies
+        require_once LISTINGS_PLUGIN_DIR . 'includes/class-listings-taxonomies.php';
+
         $this->loader = new Listings_Loader();
     }
 
@@ -78,6 +81,9 @@ class Listings
 
         // Initialize meta boxes
         new Listings_Meta();
+
+        // Initialize taxonomies
+        new Listings_Taxonomies();
     }
 
     /**
@@ -113,6 +119,7 @@ class Listings
             'menu_position' => 5,
             'menu_icon' => 'dashicons-building',
             'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
+            'taxonomies' => array('property_type', 'listing_type', 'post_tag'),
         );
 
         register_post_type('listing', $args);
