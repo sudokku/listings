@@ -32,3 +32,19 @@ function run_listings()
     $plugin->run();
 }
 run_listings();
+
+// Activation hook.
+register_activation_hook(__FILE__, 'listings_activate');
+function listings_activate()
+{
+    // Flush rewrite rules.
+    flush_rewrite_rules();
+}
+
+// Deactivation hook.
+register_deactivation_hook(__FILE__, 'listings_deactivate');
+function listings_deactivate()
+{
+    // Flush rewrite rules.
+    flush_rewrite_rules();
+}

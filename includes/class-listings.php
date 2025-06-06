@@ -45,6 +45,9 @@ class Listings
         // The class responsible for handling taxonomies
         require_once LISTINGS_PLUGIN_DIR . 'includes/class-listings-taxonomies.php';
 
+        // The class responsible for handling Gutenberg blocks
+        require_once LISTINGS_PLUGIN_DIR . 'includes/class-listings-blocks.php';
+
         $this->loader = new Listings_Loader();
     }
 
@@ -84,6 +87,9 @@ class Listings
 
         // Initialize taxonomies
         new Listings_Taxonomies();
+
+        // Initialize blocks
+        new Listings_Blocks();
     }
 
     /**
@@ -120,6 +126,7 @@ class Listings
             'menu_icon' => 'dashicons-building',
             'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
             'taxonomies' => array('property_type', 'listing_type', 'post_tag'),
+            'show_in_rest' => true, // Enable Gutenberg editor
         );
 
         register_post_type('listing', $args);
