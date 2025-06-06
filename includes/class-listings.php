@@ -124,7 +124,7 @@ class Listings
             'hierarchical' => false,
             'menu_position' => 5,
             'menu_icon' => 'dashicons-building',
-            'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
+            'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'custom-fields'),
             'taxonomies' => array('property_type', 'listing_type', 'post_tag'),
             'show_in_rest' => true, // Enable Gutenberg editor
         );

@@ -13,6 +13,44 @@ class Listings_Meta
     {
         add_action('add_meta_boxes', array($this, 'add_listing_meta_boxes'));
         add_action('save_post_listing', array($this, 'save_listing_meta'));
+        add_action('init', array($this, 'register_meta_for_rest'));
+    }
+
+    /**
+     * Register meta fields for REST API
+     */
+    public function register_meta_for_rest()
+    {
+        $meta_fields = array(
+            '_listing_rooms',
+            '_listing_bedrooms',
+            '_listing_bathrooms',
+            '_listing_has_garage',
+            '_listing_garage_capacity',
+            '_listing_area',
+            '_listing_area_unit',
+            '_listing_year_built',
+            '_listing_address',
+            '_listing_city',
+            '_listing_state',
+            '_listing_country',
+            '_listing_zip',
+            '_listing_price',
+            '_listing_sale_price',
+            '_listing_features'
+        );
+
+        foreach ($meta_fields as $field) {
+            register_post_meta('listing', $field, array(
+                'type' => 'string',
+                'single' => true,
+                'show_in_rest' => true,
+                'sanitize_callback' => 'sanitize_text_field',
+                'auth_callback' => function () {
+                    return current_user_can('edit_posts');
+                }
+            ));
+        }
     }
 
     /**
