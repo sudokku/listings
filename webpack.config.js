@@ -1,5 +1,6 @@
 const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
 
 // Get all block.json files
 const glob = require('glob');
@@ -65,5 +66,14 @@ module.exports = {
     },
     plugins: [
         ...defaultConfig.plugins,
+        new CopyPlugin({
+            patterns: blockFiles.map(blockFile => {
+                const blockName = path.basename(path.dirname(blockFile));
+                return {
+                    from: blockFile,
+                    to: `${blockName}/block.json`
+                };
+            })
+        }),
     ],
 }; 

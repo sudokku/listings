@@ -25,9 +25,12 @@ class Listings_Blocks
      */
     public function register_blocks()
     {
-        // Register the block
-        register_block_type(
-            LISTINGS_PLUGIN_DIR . 'blocks/listing-info'
-        );
+        // Get all block.json files from the build directory
+        $block_dirs = glob(LISTINGS_PLUGIN_DIR . 'build/*/block.json');
+
+        foreach ($block_dirs as $block_file) {
+            // Register each block
+            register_block_type(dirname($block_file));
+        }
     }
 }
