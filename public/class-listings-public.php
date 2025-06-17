@@ -18,10 +18,19 @@ class Listings_Public
      */
     public function enqueue_styles()
     {
+        // Enqueue Font Awesome
+        wp_enqueue_style(
+            'font-awesome',
+            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
+            array(),
+            '6.5.1',
+            'all'
+        );
+
         wp_enqueue_style(
             'listings-public',
             LISTINGS_PLUGIN_URL . 'public/css/listings-public.css',
-            array(),
+            array('font-awesome'),
             LISTINGS_VERSION,
             'all'
         );

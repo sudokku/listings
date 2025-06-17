@@ -5,4 +5,34 @@
  * Replace them with your own styles or remove the file completely.
  */
 
-.wp-block-listings-listing-info {}
+.wp-block-listings-listing-info {
+	&.listing-info-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+
+		.listing-info-column {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+
+			&:not(:last-child) {
+				border-right: 1px solid #e0e0e0;
+			}
+
+			.listing-info-icon {
+				font-size: 2rem;
+			}
+
+			.listing-info-content {
+				text-align: center;
+				margin-top: 0.5rem;
+
+				h4 {
+					font-size: 1.2rem;
+					font-weight: 600;
+					margin: 0;
+				}
+			}
+		}
+	}
+}
