@@ -48,6 +48,12 @@ class Listings
         // The class responsible for handling Gutenberg blocks
         require_once LISTINGS_PLUGIN_DIR . 'includes/class-listings-blocks.php';
 
+        // The class responsible for helper functions
+        require_once LISTINGS_PLUGIN_DIR . 'includes/class-listings-helpers.php';
+
+        // The class responsible for template loading
+        require_once LISTINGS_PLUGIN_DIR . 'includes/class-listings-template-loader.php';
+
         $this->loader = new Listings_Loader();
     }
 
@@ -81,6 +87,7 @@ class Listings
     private function define_post_type_hooks()
     {
         $this->loader->add_action('init', $this, 'register_listing_post_type');
+        $this->loader->add_filter('template_include', $this, 'template_loader');
 
         // Initialize meta boxes
         new Listings_Meta();
@@ -130,6 +137,23 @@ class Listings
         );
 
         register_post_type('listing', $args);
+    }
+
+    /**
+     * Load a template
+     *
+     * @param string $template
+     * @return string
+     */
+    public function template_loader($template)
+    {
+        if (is_post_type_archive('listing') || is_tax('property_type') || is_tax('listing_type')) {
+            $default_file = 'archive-listing.php';
+            $search_files = array('archive-listing.php');
+            $template = Listings_Template_Loader::locate_template($default_file, '', '', $search_files);
+        }
+
+        return $template;
     }
 
     /**

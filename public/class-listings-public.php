@@ -34,6 +34,17 @@ class Listings_Public
             LISTINGS_VERSION,
             'all'
         );
+
+        // Enqueue archive styles if on archive page
+        if (is_post_type_archive('listing') || is_tax('property_type') || is_tax('listing_type')) {
+            wp_enqueue_style(
+                'listings-archive',
+                LISTINGS_PLUGIN_URL . 'public/css/listings-archive.css',
+                array('listings-public'),
+                LISTINGS_VERSION,
+                'all'
+            );
+        }
     }
 
     /**
