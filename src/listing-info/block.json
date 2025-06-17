@@ -11,6 +11,36 @@
 	"supports": {
 		"html": false
 	},
+	"attributes": {
+		"listingId": {
+			"type": "string",
+			"default": ""
+		},
+		"showRooms": {
+			"type": "boolean",
+			"default": false
+		},
+		"showBedrooms": {
+			"type": "boolean",
+			"default": false
+		},
+		"showBathrooms": {
+			"type": "boolean",
+			"default": false
+		},
+		"showGarageCapacity": {
+			"type": "boolean",
+			"default": false
+		},
+		"showArea": {
+			"type": "boolean",
+			"default": false
+		},
+		"showYearBuilt": {
+			"type": "boolean",
+			"default": false
+		}
+	},
 	"textdomain": "listing-info",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
