@@ -65,70 +65,13 @@ $listings_query = new WP_Query($args);
         <div class="container">
             <?php if ($listings_query->have_posts()): ?>
                 <div class="listings-grid">
-                    <?php while ($listings_query->have_posts()):
-                        $listings_query->the_post(); ?>
-                        <article id="listing-<?php the_ID(); ?>" <?php post_class('listing-card'); ?>>
-                            <?php if (has_post_thumbnail()): ?>
-                                <div class="listing-card__image">
-                                    <a href="<?php the_permalink(); ?>">
-                                        <?php the_post_thumbnail('medium'); ?>
-                                    </a>
-                                </div>
-                            <?php endif; ?>
-
-                            <div class="listing-card__content">
-                                <h2 class="listing-card__title">
-                                    <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                                </h2>
-
-                                <?php
-                                // Get listing meta
-                                $price = get_post_meta(get_the_ID(), '_listing_price', true);
-                                $area = get_post_meta(get_the_ID(), '_listing_area', true);
-                                $area_unit = get_post_meta(get_the_ID(), '_listing_area_unit', true) ?: 'sqft';
-                                $bedrooms = get_post_meta(get_the_ID(), '_listing_bedrooms', true);
-                                $bathrooms = get_post_meta(get_the_ID(), '_listing_bathrooms', true);
-                                ?>
-
-                                <?php if ($price): ?>
-                                    <div class="listing-card__price">
-                                        <?php echo esc_html($price); ?>
-                                    </div>
-                                <?php endif; ?>
-
-                                <div class="listing-card__details">
-                                    <?php if ($area): ?>
-                                        <span class="listing-card__area">
-                                            <i class="fas fa-ruler-combined"></i>
-                                            <?php echo esc_html($area . ' ' . $area_unit); ?>
-                                        </span>
-                                    <?php endif; ?>
-
-                                    <?php if ($bedrooms): ?>
-                                        <span class="listing-card__bedrooms">
-                                            <i class="fas fa-bed"></i>
-                                            <?php echo esc_html($bedrooms); ?>
-                                        </span>
-                                    <?php endif; ?>
-
-                                    <?php if ($bathrooms): ?>
-                                        <span class="listing-card__bathrooms">
-                                            <i class="fas fa-bath"></i>
-                                            <?php echo esc_html($bathrooms); ?>
-                                        </span>
-                                    <?php endif; ?>
-                                </div>
-
-                                <div class="listing-card__excerpt">
-                                    <?php the_excerpt(); ?>
-                                </div>
-
-                                <a href="<?php the_permalink(); ?>" class="listing-card__link">
-                                    <?php _e('View Details', 'listings'); ?>
-                                </a>
-                            </div>
-                        </article>
-                    <?php endwhile; ?>
+                    <?php
+                    while ($listings_query->have_posts()):
+                        $listings_query->the_post();
+                        $args = array('show_excerpt' => false);
+                        Listings_Template_Loader::get_template('partials/listing-card.php', $args);
+                    endwhile;
+                    ?>
                 </div>
 
                 <?php
