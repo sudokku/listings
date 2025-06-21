@@ -151,6 +151,10 @@ class Listings
             $default_file = 'archive-listing.php';
             $search_files = array('archive-listing.php');
             $template = Listings_Template_Loader::locate_template($default_file, '', '', $search_files);
+        } elseif (is_singular('listing')) {
+            $default_file = 'single-listing.php';
+            $search_files = array('single-listing.php');
+            $template = Listings_Template_Loader::locate_template($default_file, '', '', $search_files);
         }
 
         return $template;
