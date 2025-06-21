@@ -89,18 +89,13 @@ if (have_posts()):
                     </div>
                     <div class="single-listing__head-row">
                         <?php
-                        // render_block(array(
-                        //     'blockName' => 'listings/listing-info',
-                        //     'attrs' => array(
-                        //         'listingId' => get_the_ID(),
-                        //         'showRooms' => true,
-                        //         'showBedrooms' => true,
-                        //         'showBathrooms' => true,
-                        //         'showGarageCapacity' => true,
-                        //         'showArea' => true,
-                        //         'showYearBuilt' => true,
-                        //     )
-                        // ));
+                        $listing_info_block = '<!-- wp:listings/listing-info {"listingId":"' . get_the_ID() . '", "showRooms": true, "showBedrooms": true, "showBathrooms": true, "showGarageCapacity": true, "showArea": true, "showYearBuilt": true} /-->';
+                        $parsed_blocks = parse_blocks($listing_info_block);
+                        if ($parsed_blocks) {
+                            foreach ($parsed_blocks as $block) {
+                                echo render_block($block);
+                            }
+                        }
                         ?>
                     </div>
                 </div>
