@@ -1,7 +1,7 @@
 /******/ (() => { // webpackBootstrap
-/*!**********************************!*\
-  !*** ./src/listing-info/view.js ***!
-  \**********************************/
+/*!*************************************!*\
+  !*** ./src/listing-gallery/view.js ***!
+  \*************************************/
 /**
  * Use this file for JavaScript code that you want to run in the front-end 
  * on posts/pages that contain this block.
@@ -25,7 +25,7 @@
  */
 
 /* eslint-disable no-console */
-console.log("Hello World! (from listings-listing-info block)");
+console.log("Hello World! (from listings-listing-gallery block)");
 /* eslint-enable no-console */
 /******/ })()
 ;
