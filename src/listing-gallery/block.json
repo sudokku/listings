@@ -6,10 +6,16 @@
 	"title": "Listing Gallery",
 	"category": "media",
 	"icon": "gallery",
-	"description": "Example block scaffolded with Create Block tool.",
+	"description": "Display a gallery of images for a selected listing.",
 	"example": {},
 	"supports": {
 		"html": false
+	},
+	"attributes": {
+		"listingId": {
+			"type": "number",
+			"default": 0
+		}
 	},
 	"textdomain": "listings",
 	"editorScript": "file:./index.js",

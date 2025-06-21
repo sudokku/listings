@@ -7,3 +7,57 @@
 .wp-block-listings-listing-gallery {
 	border: 1px dotted #f00;
 }
+
+.listing-gallery-preview {
+	.listing-gallery-hero {
+		margin-bottom: 1rem;
+
+		.listing-gallery-hero-image {
+			width: 100%;
+			height: 300px;
+			object-fit: cover;
+			border-radius: 8px;
+		}
+	}
+
+	.listing-gallery-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+		gap: 0.5rem;
+
+		.listing-gallery-item {
+			position: relative;
+
+			.listing-gallery-thumbnail {
+				width: 100%;
+				height: 80px;
+				object-fit: cover;
+				border-radius: 4px;
+			}
+		}
+	}
+}
+
+.listing-gallery-remove {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	background: rgba(255, 255, 255, 0.9);
+	border: none;
+	border-radius: 50%;
+	width: 24px;
+	height: 24px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 16px;
+	font-weight: bold;
+	color: #d63638;
+	transition: all 0.2s ease;
+
+	&:hover {
+		background: #d63638;
+		color: white;
+	}
+}

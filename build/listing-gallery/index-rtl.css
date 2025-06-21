@@ -1,11 +1,1 @@
-/*!****************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/@wordpress/scripts/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/listing-gallery/editor.scss ***!
-  \****************************************************************************************************************************************************************************************************************************************************************************************/
-/**
- * The following styles get applied inside the editor only.
- *
- * Replace them with your own styles or remove the file completely.
- */
-.wp-block-listings-listing-gallery {
-  border: 1px dotted #f00;
-}
+.wp-block-listings-listing-gallery{border:1px dotted red}.listing-gallery-preview .listing-gallery-hero{margin-bottom:1rem}.listing-gallery-preview .listing-gallery-hero .listing-gallery-hero-image{border-radius:8px;height:300px;-o-object-fit:cover;object-fit:cover;width:100%}.listing-gallery-preview .listing-gallery-grid{display:grid;gap:.5rem;grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}.listing-gallery-preview .listing-gallery-grid .listing-gallery-item{position:relative}.listing-gallery-preview .listing-gallery-grid .listing-gallery-item .listing-gallery-thumbnail{border-radius:4px;height:80px;-o-object-fit:cover;object-fit:cover;width:100%}.listing-gallery-remove{align-items:center;background:hsla(0,0%,100%,.9);border:none;border-radius:50%;color:#d63638;cursor:pointer;display:flex;font-size:16px;font-weight:700;height:24px;justify-content:center;position:absolute;left:8px;top:8px;transition:all .2s ease;width:24px}.listing-gallery-remove:hover{background:#d63638;color:#fff}

@@ -1,17 +1,11 @@
 /**
- * Retrieves the translation of text.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/
+ * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-
-/**
- * React hook that is used to mark the block wrapper element.
- * It provides all the necessary props like the class name.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
- */
-import { useBlockProps } from '@wordpress/block-editor';
+import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
+import { PanelBody, SelectControl, Placeholder } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
+import { store as coreStore } from '@wordpress/core-data';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -27,12 +21,137 @@ import './editor.scss';
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
  *
+ * @param {Object} props               Block props.
+ * @param {Object} props.attributes    Block attributes.
+ * @param {Function} props.setAttributes Function to set block attributes.
  * @return {Element} Element to render.
  */
-export default function Edit() {
+export default function Edit({ attributes, setAttributes }) {
+	const { listingId } = attributes;
+
+	// Get all listings for the dropdown
+	const listings = useSelect((select) => {
+		const posts = select('core').getEntityRecords('postType', 'listing', {
+			per_page: -1,
+			status: 'publish'
+		});
+
+		if (!posts) return [];
+
+		return posts.map(post => ({
+			value: post.id,
+			label: post.title.rendered
+		}));
+	}, []);
+
+	// Get the selected listing's gallery images
+	const listingImages = useSelect((select) => {
+		if (!listingId) return [];
+
+		const listing = select('core').getEntityRecord('postType', 'listing', listingId);
+		if (!listing) return [];
+
+		console.log('Listing object:', listing);
+		console.log('Listing meta:', listing.meta);
+		console.log('Available meta keys:', Object.keys(listing.meta || {}));
+
+		const galleryImagesRaw = listing.meta?._listing_gallery_images;
+		let galleryImageIds = [];
+
+		if (galleryImagesRaw) {
+			if (Array.isArray(galleryImagesRaw)) {
+				// Handle old array format
+				galleryImageIds = galleryImagesRaw;
+			} else {
+				// Handle new string format
+				galleryImageIds = galleryImagesRaw.split(',').filter(id => id.trim());
+			}
+		}
+
+		if (galleryImageIds.length === 0) return [];
+
+		return galleryImageIds.map(id => {
+			const attachment = select('core').getMedia(parseInt(id.trim()));
+			return attachment ? {
+				id: attachment.id,
+				url: attachment.source_url,
+				alt: attachment.alt_text,
+				caption: attachment.caption?.raw || '',
+				thumbnail: attachment.media_details?.sizes?.thumbnail?.source_url || attachment.source_url,
+				medium: attachment.media_details?.sizes?.medium?.source_url || attachment.source_url
+			} : null;
+		}).filter(Boolean);
+	}, [listingId]);
+
+	const onListingChange = (newListingId) => {
+		setAttributes({ listingId: parseInt(newListingId) || 0 });
+	};
+
 	return (
-		<p { ...useBlockProps() }>
-			{ __( 'Listing Gallery – hello from the editor!', 'listings' ) }
-		</p>
+		<>
+			<InspectorControls>
+				<PanelBody title={__('Gallery Settings', 'listings')}>
+					<SelectControl
+						label={__('Select Listing', 'listings')}
+						value={listingId || ''}
+						options={[
+							{ value: '', label: __('Select a listing...', 'listings') },
+							...listings
+						]}
+						onChange={onListingChange}
+					/>
+				</PanelBody>
+			</InspectorControls>
+
+			<div {...useBlockProps()}>
+				{!listingId ? (
+					<Placeholder
+						icon="gallery"
+						label={__('Listing Gallery', 'listings')}
+						instructions={__('Select a listing to display its gallery images.', 'listings')}
+					>
+						<SelectControl
+							value={listingId || ''}
+							options={[
+								{ value: '', label: __('Select a listing...', 'listings') },
+								...listings
+							]}
+							onChange={onListingChange}
+						/>
+					</Placeholder>
+				) : listingImages.length === 0 ? (
+					<Placeholder
+						icon="gallery"
+						label={__('No Images Found', 'listings')}
+						instructions={__('The selected listing has no gallery images. Add images to the listing in the admin panel.', 'listings')}
+					/>
+				) : (
+					<div className="listing-gallery-preview">
+						<div className="listing-gallery-hero">
+							{listingImages[0] && (
+								<img
+									src={listingImages[0].url}
+									alt={listingImages[0].alt}
+									className="listing-gallery-hero-image"
+								/>
+							)}
+						</div>
+						{listingImages.length > 1 && (
+							<div className="listing-gallery-grid">
+								{listingImages.slice(1).map((image) => (
+									<div key={image.id} className="listing-gallery-item">
+										<img
+											src={image.thumbnail}
+											alt={image.alt}
+											className="listing-gallery-thumbnail"
+										/>
+									</div>
+								))}
+							</div>
+						)}
+					</div>
+				)}
+			</div>
+		</>
 	);
 }

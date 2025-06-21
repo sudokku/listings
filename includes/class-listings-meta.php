@@ -13,7 +13,7 @@ class Listings_Meta
     {
         add_action('add_meta_boxes', array($this, 'add_listing_meta_boxes'));
         add_action('save_post_listing', array($this, 'save_listing_meta'));
-        add_action('init', array($this, 'register_meta_for_rest'));
+        add_action('init', array($this, 'register_meta_for_rest'), 20);
     }
 
     /**
@@ -37,7 +37,8 @@ class Listings_Meta
             '_listing_zip',
             '_listing_price',
             '_listing_sale_price',
-            '_listing_features'
+            '_listing_features',
+            '_listing_gallery_images'
         );
 
         foreach ($meta_fields as $field) {
@@ -80,6 +81,15 @@ class Listings_Meta
             'listing_features',
             __('Interior Features', 'listings'),
             array($this, 'render_features_meta_box'),
+            'listing',
+            'normal',
+            'high'
+        );
+
+        add_meta_box(
+            'listing_gallery',
+            __('Property Gallery', 'listings'),
+            array($this, 'render_gallery_meta_box'),
             'listing',
             'normal',
             'high'
@@ -219,6 +229,129 @@ class Listings_Meta
     }
 
     /**
+     * Render the gallery meta box
+     */
+    public function render_gallery_meta_box($post)
+    {
+        $gallery_images_string = get_post_meta($post->ID, '_listing_gallery_images', true);
+        $gallery_images = array();
+
+        if (!empty($gallery_images_string)) {
+            $gallery_images = array_filter(explode(',', $gallery_images_string));
+        }
+        ?>
+        <div class="listing-meta-box">
+            <p><?php _e('Select images for the property gallery. The first image will be used as the hero image.', 'listings'); ?>
+            </p>
+            <div id="listing-gallery-container">
+                <input type="hidden" id="listing_gallery_images" name="listing_gallery_images"
+                    value="<?php echo esc_attr(implode(',', $gallery_images)); ?>">
+                <div id="listing-gallery-preview">
+                    <?php
+                    if (!empty($gallery_images)) {
+                        foreach ($gallery_images as $image_id) {
+                            $image_url = wp_get_attachment_image_url($image_id, 'thumbnail');
+                            if ($image_url) {
+                                echo '<div class="gallery-image-preview" data-id="' . esc_attr($image_id) . '">';
+                                echo '<img src="' . esc_url($image_url) . '" alt="">';
+                                echo '<button type="button" class="remove-gallery-image" data-id="' . esc_attr($image_id) . '">×</button>';
+                                echo '</div>';
+                            }
+                        }
+                    }
+                    ?>
+                </div>
+                <button type="button" class="button" id="add-gallery-images"><?php _e('Add Images', 'listings'); ?></button>
+            </div>
+        </div>
+        <script>
+            jQuery(document).ready(function ($) {
+                // Initialize media uploader for gallery images
+                var galleryFrame;
+
+                $('#add-gallery-images').on('click', function (e) {
+                    e.preventDefault();
+
+                    if (galleryFrame) {
+                        galleryFrame.open();
+                        return;
+                    }
+
+                    galleryFrame = wp.media({
+                        title: '<?php _e('Select Gallery Images', 'listings'); ?>',
+                        button: {
+                            text: '<?php _e('Add to Gallery', 'listings'); ?>'
+                        },
+                        multiple: true,
+                        library: {
+                            type: 'image'
+                        }
+                    });
+
+                    galleryFrame.on('select', function () {
+                        var attachments = galleryFrame.state().get('selection').toJSON();
+                        var currentImages = $('#listing_gallery_images').val().split(',').filter(function (id) { return id.length > 0; });
+
+                        attachments.forEach(function (attachment) {
+                            if (currentImages.indexOf(attachment.id.toString()) === -1) {
+                                currentImages.push(attachment.id);
+                                $('#listing-gallery-preview').append(
+                                    '<div class="gallery-image-preview" data-id="' + attachment.id + '">' +
+                                    '<img src="' + attachment.sizes.thumbnail.url + '" alt="">' +
+                                    '<button type="button" class="remove-gallery-image" data-id="' + attachment.id + '">×</button>' +
+                                    '</div>'
+                                );
+                            }
+                        });
+
+                        $('#listing_gallery_images').val(currentImages.join(','));
+                    });
+
+                    galleryFrame.open();
+                });
+
+                // Remove gallery image
+                $(document).on('click', '.remove-gallery-image', function () {
+                    var imageId = $(this).data('id');
+                    var currentImages = $('#listing_gallery_images').val().split(',').filter(function (id) { return id != imageId && id.length > 0; });
+                    $('#listing_gallery_images').val(currentImages.join(','));
+                    $(this).closest('.gallery-image-preview').remove();
+                });
+            });
+        </script>
+        <style>
+            .gallery-image-preview {
+                display: inline-block;
+                margin: 5px;
+                position: relative;
+            }
+
+            .gallery-image-preview img {
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+                border: 1px solid #ddd;
+            }
+
+            .remove-gallery-image {
+                position: absolute;
+                top: -5px;
+                right: -5px;
+                background: #dc3232;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                cursor: pointer;
+                font-size: 14px;
+                line-height: 1;
+            }
+        </style>
+        <?php
+    }
+
+    /**
      * Render the pricing meta box
      */
     public function render_pricing_meta_box($post)
@@ -299,6 +432,12 @@ class Listings_Meta
             $features = array_map('sanitize_text_field', $_POST['listing_features']);
             $features = array_filter($features); // Remove empty values
             update_post_meta($post_id, '_listing_features', $features);
+        }
+
+        // Save gallery images
+        if (isset($_POST['listing_gallery_images'])) {
+            $gallery_images = array_filter(explode(',', sanitize_text_field($_POST['listing_gallery_images'])));
+            update_post_meta($post_id, '_listing_gallery_images', implode(',', $gallery_images));
         }
     }
 }

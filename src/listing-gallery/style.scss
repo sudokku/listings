@@ -1,12 +1,46 @@
 /**
  * The following styles get applied both on the front of your site
  * and in the editor.
- *
- * Replace them with your own styles or remove the file completely.
  */
 
 .wp-block-listings-listing-gallery {
-	background-color: #21759b;
-	color: #fff;
-	padding: 2px;
+	.listing-gallery-container {
+		.listing-gallery-hero {
+			margin-bottom: 1.5rem;
+
+			.listing-gallery-hero-image {
+				width: 100%;
+				height: 400px;
+				object-fit: cover;
+				border-radius: 12px;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+			}
+		}
+
+		.listing-gallery-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+			gap: 0.75rem;
+
+			.listing-gallery-item {
+				position: relative;
+				border-radius: 8px;
+				overflow: hidden;
+				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+				transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+				&:hover {
+					transform: translateY(-2px);
+					box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+				}
+
+				.listing-gallery-thumbnail {
+					width: 100%;
+					height: 100px;
+					object-fit: cover;
+					display: block;
+				}
+			}
+		}
+	}
 }
