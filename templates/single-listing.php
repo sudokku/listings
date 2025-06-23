@@ -85,7 +85,15 @@ if (have_posts()):
                         </div>
                     </div>
                     <div class="single-listing__head-row">
-                        Future Gallery block here
+                        <?php
+                        $listing_gallery_block = '<!-- wp:listings/listing-gallery {"listingId":"' . get_the_ID() . '"} /-->';
+                        $parsed_blocks = parse_blocks($listing_gallery_block);
+                        if ($parsed_blocks) {
+                            foreach ($parsed_blocks as $block) {
+                                echo render_block($block);
+                            }
+                        }
+                        ?>
                     </div>
                     <div class="single-listing__head-row">
                         <?php
