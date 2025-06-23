@@ -51,10 +51,6 @@ export default function Edit({ attributes, setAttributes }) {
 		const listing = select('core').getEntityRecord('postType', 'listing', listingId);
 		if (!listing) return [];
 
-		console.log('Listing object:', listing);
-		console.log('Listing meta:', listing.meta);
-		console.log('Available meta keys:', Object.keys(listing.meta || {}));
-
 		const galleryImagesRaw = listing.meta?._listing_gallery_images;
 		let galleryImageIds = [];
 
