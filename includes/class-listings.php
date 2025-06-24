@@ -155,6 +155,10 @@ class Listings
             $default_file = 'single-listing.php';
             $search_files = array('single-listing.php');
             $template = Listings_Template_Loader::locate_template($default_file, '', '', $search_files);
+        } elseif (is_search() && get_query_var('post_type') === 'listing') {
+            $default_file = 'search-listing.php';
+            $search_files = array('search-listing.php');
+            $template = Listings_Template_Loader::locate_template($default_file, '', '', $search_files);
         }
 
         return $template;

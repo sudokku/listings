@@ -58,6 +58,14 @@ $listings_query = new WP_Query($args);
                 }
                 ?>
             </h1>
+
+            <?php
+            // Display search form
+            echo Listings_Helpers::get_search_form(array(
+                'show_title' => false,
+                'container_class' => 'listings-archive-search'
+            ));
+            ?>
         </div>
     </div>
 
