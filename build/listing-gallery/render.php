@@ -74,34 +74,14 @@ if (empty($valid_images)): ?>
 endif;
 
 $wrapper_attributes = get_block_wrapper_attributes(array(
-	'class' => 'listing-gallery'
+	'class' => 'listing-gallery-grid-style'
 )); ?>
 
 <div <?php echo $wrapper_attributes; ?>>
-	<div class="listing-gallery-preview">
-		<?php if (!empty($valid_images)): ?>
-			<div class="listing-gallery-hero">
-				<?php
-				$hero_image = $valid_images[0];
-				?>
-				<img src="<?php echo esc_url($hero_image['url']); ?>" alt="<?php echo esc_attr($hero_image['alt']); ?>"
-					class="listing-gallery-hero-image" <?php if ($hero_image['width'] && $hero_image['height']): ?>
-						width="<?php echo esc_attr($hero_image['width']); ?>"
-						height="<?php echo esc_attr($hero_image['height']); ?>" <?php endif; ?> />
-			</div>
-
-			<?php if (count($valid_images) > 1): ?>
-				<div class="listing-gallery-grid">
-					<?php foreach (array_slice($valid_images, 1) as $image): ?>
-						<div class="listing-gallery-item">
-							<img src="<?php echo esc_url($image['thumbnail']); ?>" alt="<?php echo esc_attr($image['alt']); ?>"
-								class="listing-gallery-thumbnail" <?php if ($image['width'] && $image['height']): ?>
-									width="<?php echo esc_attr($image['width']); ?>" height="<?php echo esc_attr($image['height']); ?>"
-								<?php endif; ?> />
-						</div>
-					<?php endforeach; ?>
-				</div>
-			<?php endif; ?>
-		<?php endif; ?>
-	</div>
+	<?php foreach (array_slice($valid_images, 0, 5) as $idx => $image): ?>
+		<div class="gallery-item<?php echo $idx === 0 ? ' gallery-item--hero' : ''; ?>">
+			<img src="<?php echo esc_url($image['url']); ?>" alt="<?php echo esc_attr($image['alt']); ?>"
+				class="gallery-item__img" />
+		</div>
+	<?php endforeach; ?>
 </div>

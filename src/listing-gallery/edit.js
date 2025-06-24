@@ -122,29 +122,21 @@ export default function Edit({ attributes, setAttributes }) {
 						instructions={__('The selected listing has no gallery images. Add images to the listing in the admin panel.', 'listings')}
 					/>
 				) : (
-					<div className="listing-gallery-preview">
-						<div className="listing-gallery-hero">
-							{listingImages[0] && (
+					<div className="listing-gallery-grid-style">
+						{listingImages.slice(0, 5).map((image, idx) => (
+							<div
+								key={image.id}
+								className={
+									'gallery-item' + (idx === 0 ? ' gallery-item--hero' : '')
+								}
+							>
 								<img
-									src={listingImages[0].url}
-									alt={listingImages[0].alt}
-									className="listing-gallery-hero-image"
+									src={image.url}
+									alt={image.alt}
+									className="gallery-item__img"
 								/>
-							)}
-						</div>
-						{listingImages.length > 1 && (
-							<div className="listing-gallery-grid">
-								{listingImages.slice(1).map((image) => (
-									<div key={image.id} className="listing-gallery-item">
-										<img
-											src={image.thumbnail}
-											alt={image.alt}
-											className="listing-gallery-thumbnail"
-										/>
-									</div>
-								))}
 							</div>
-						)}
+						))}
 					</div>
 				)}
 			</div>
